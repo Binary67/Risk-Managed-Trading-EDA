@@ -48,7 +48,7 @@ def EvaluateFixedStopStrategy(
             StopPrice = EntryPrice - AtrMultiplier * CurrentAtr
             RiskPerUnit = EntryPrice - StopPrice
             EquityRisk = Self.equity * (RiskPercent / 100)
-            Size = min(EquityRisk / RiskPerUnit, Self.equity / EntryPrice)
+            Size = math.floor(min(EquityRisk / RiskPerUnit, Self.equity / EntryPrice))
             if Size > 0:
                 Self.buy(size=Size, sl=StopPrice)
 
@@ -92,7 +92,7 @@ def EvaluateTrailingStopStrategy(
         if Self.data.Signal[-1] == 1 and not Self.position and RangePct <= VolatilityCap:
             EntryPrice = Self.data.Close[-1]
             StopPrice = EntryPrice - AtrMultiplier * CurrentAtr
-            Size = math.floor(Self.equity / EntryPrice)
+            Size = math.floor(math.floor(Self.equity / EntryPrice))
             Self.buy(size=Size, sl=StopPrice)
 
     def ExitLogic(Self) -> None:
