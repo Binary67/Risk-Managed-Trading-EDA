@@ -2,7 +2,7 @@ import pandas as pd
 import pandas_ta as ta
 
 
-def generate_ema_signal(TradingDataframe: pd.DataFrame) -> pd.DataFrame:
+def GenerateEmaSignal(TradingDataframe: pd.DataFrame) -> pd.DataFrame:
     """Generate trading signals using EMA crossover.
 
     A long signal is generated when:
