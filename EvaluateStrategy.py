@@ -1,7 +1,7 @@
 import pandas as pd
 import pandas_ta as ta
 from backtesting import Backtest, Strategy
-
+import math
 
 def AtrIndicator(HighSeries: pd.Series, LowSeries: pd.Series, CloseSeries: pd.Series, Length: int = 14) -> pd.Series:
     """Calculate Average True Range (ATR)."""
@@ -87,7 +87,7 @@ def EvaluateTrailingStopStrategy(
                 if self.data.Signal[-1] == 1 and RangePct <= VolatilityCap:
                     EntryPrice = self.data.Close[-1]
                     StopPrice = EntryPrice - AtrMultiplier * CurrentAtr
-                    Size = self.equity / EntryPrice
+                    Size = math.floor(self.equity / EntryPrice)
                     self.buy(size=Size, sl=StopPrice)
 
     BacktestInstance = Backtest(TradingDataframe, TrailingStopStrategy, cash=InitialCash, commission=0.0)
