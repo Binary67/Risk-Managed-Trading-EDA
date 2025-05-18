@@ -1,3 +1,5 @@
+import numpy as np
+np.NaN = np.nan
 import pandas as pd
 import pandas_ta as ta
 
@@ -22,9 +24,13 @@ def GenerateEmaSignal(TradingDataframe: pd.DataFrame) -> pd.DataFrame:
         represents a long position.
     """
     ResultDataframe = TradingDataframe.copy()
-    ResultDataframe["EMA20"] = ta.ema(ResultDataframe["Close"], length=20)
-    ResultDataframe["EMA60"] = ta.ema(ResultDataframe["Close"], length=60)
-    ResultDataframe["EMA120"] = ta.ema(ResultDataframe["Close"], length=120)
+    LengthList = [20, 60, 120]
+    EmaDataframe = pd.concat(
+        [ta.ema(ResultDataframe["Close"], length=Length) for Length in LengthList],
+        axis=1,
+    )
+    EmaDataframe.columns = [f"EMA{Length}" for Length in LengthList]
+    ResultDataframe[["EMA20", "EMA60", "EMA120"]] = EmaDataframe
 
     ConditionLong = (
         (ResultDataframe["EMA20"] > ResultDataframe["EMA60"])
